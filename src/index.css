@@ -1,0 +1,41 @@
+@import "tailwindcss";
+
+/* One phosphor, three signal colors. Hierarchy comes from inverse video, brightness and rules, not size or boxes. */
+@theme {
+  --color-glass: #0b0f0c;
+  --color-ph: #86e08f;
+  --color-hi: #d2ffd8;
+  --color-dim: #5f9a6b;
+  --color-amber: #e8b04a;
+  --color-red: #ff6b5e;
+  --color-frame: #2f5a39;
+  --font-term: 'B612 Mono', 'IBM Plex Mono', ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+}
+
+/* The frame (rules around the HUD and prompt) carries the alert zone, set from React on <body>. */
+body[data-zone=elevated] { --color-frame: #7a6128; }
+body[data-zone=critical] { --color-frame: #a8453c; }
+body[data-zone=locked] { --color-frame: var(--color-red); }
+
+@layer base {
+  html, body, #root { height: 100%; }
+  html, body { margin: 0; background: var(--color-glass); color: var(--color-ph); font: 14px/1.55 var(--font-term); font-variant-ligatures: none; }
+  body { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+  pre { margin: 0; white-space: pre-wrap; font: inherit; }
+  code { color: var(--color-amber); }
+  p { max-width: 70ch; margin: 0 0 1rem; }
+  button { font: inherit; background: none; border: 0; color: var(--color-ph); padding: .25rem 0; cursor: pointer; text-align: left; }
+  button:hover, button:focus-visible { background: var(--color-ph); color: var(--color-glass); outline: 0; }
+  input { font: inherit; background: none; border: 0; border-bottom: 1px solid var(--color-dim); color: var(--color-hi); outline: 0; }
+}
+
+/* Output log scrollbar */
+#out { scrollbar-width: thin; scrollbar-color: var(--color-frame) transparent; }
+
+/* Scanlines: hard 1px stripe every 3px. Toggle in the footer. */
+#crt { background: repeating-linear-gradient(to bottom, transparent 0, transparent 2px, rgba(0,0,0,.16) 2px, rgba(0,0,0,.16) 3px); }
+body.noscan #crt { display: none; }
+
+.glitch #out, .glitch #hud { animation: glitch .18s steps(2) 1; }
+@keyframes glitch { 0% { transform: translateX(-3px); } 50% { transform: translateX(3px); } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .glitch #out, .glitch #hud { animation: none; } * { scroll-behavior: auto; } }

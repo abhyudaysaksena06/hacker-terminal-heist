@@ -1,0 +1,12 @@
+# Supabase CLI project settings. Only values that differ from the CLI defaults are listed.
+project_id = "hacker-terminal-heist"
+
+[auth]
+# Players are anonymous: the frontend calls signInAnonymously() and never asks for an email or password.
+# On a hosted project, also turn this on under Authentication > Sign In / Providers > Anonymous.
+enable_anonymous_sign_ins = true
+
+[functions.game]
+# The function verifies the player's access token itself (works with both legacy JWT and new publishable keys),
+# and GET /leaderboard is public.
+verify_jwt = false
